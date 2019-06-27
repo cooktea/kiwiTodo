@@ -1,0 +1,112 @@
+html,body{
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+.topBar{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100px;
+    background-color: white;
+    border-bottom-style: solid;
+    justify-content: left;
+}
+.menu{
+    margin-left: 40px;
+    padding-left: 40px;
+    border-left-style: solid;
+    height: 100px;
+    min-width: 400px;
+}
+
+.menu div{
+    height: 80px;
+    font-size: 26px;
+    margin: 20px;
+}
+
+.mainContainer{
+    width: 1000px;
+    height: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    /*background-color: blue;*/
+    margin: auto;
+    margin-top: 100px;
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top: 100px;
+    border-left: solid;
+    border-right: solid;
+
+}
+
+.todoItem{
+    width: 1000px;
+    height: 60px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: gray;
+    justify-content: left;
+}
+
+.id{
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    border-radius: 25px;
+    border: solid;
+}
+
+.content{
+    margin-left: 20px;
+    padding-left: 20px;
+    border-left: solid;
+    height: 50px;
+    width: 600px;
+    justify-content: left;
+}
+
+.time{
+    margin-left: 20px;
+    padding-left: 20px;
+    border-left: solid;
+    height: 50px;
+    width: 100px;
+}
+
+.command{
+    margin-left: 20px;
+    padding-left: 20px;
+    border-left: solid;
+    height: 50px;
+    width: 100px;
+}
+
+.command img{
+    width: 40px;
+    height: 40px;
+}
+
+
+
+
+
+
+
+
