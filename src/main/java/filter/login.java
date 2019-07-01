@@ -6,9 +6,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
 @WebFilter(filterName = "login")
 
 public class login implements Filter {
+    private List<String> others = new LinkedList<>();
     public void destroy() {
     }
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
@@ -16,8 +20,14 @@ public class login implements Filter {
         HttpServletResponse response = (HttpServletResponse)resp;
         System.out.println(request.getRequestURI());
         Cookie[] cookies = request.getCookies();
-        if(request.getRequestURI().endsWith("login.html") || request.getRequestURI().endsWith("login") || request.getRequestURI().endsWith(".css") || request.getRequestURI().endsWith(".png") || request.getRequestURI().endsWith("index.html")){
-            System.out.println("isLogin");
+        boolean flag = false;
+        for (String end : others){
+            if (request.getRequestURI().endsWith(end)){
+                flag = true;
+                break;
+            }
+        }
+        if(flag){
             chain.doFilter(request,response);
         }else{
             boolean isLogin = false;
@@ -36,7 +46,12 @@ public class login implements Filter {
         }
     }
     public void init(FilterConfig config) throws ServletException {
-
+        others.add("login.html");
+//        others.add("login");
+        others.add("index.html");
+        others.add(".css");
+        others.add(".js");
+        others.add(".png");
+        others.add("user");
     }
-
 }

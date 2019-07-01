@@ -2,9 +2,103 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>登陆/注册</title>
+    <link rel="stylesheet" type="text/css" href="source/style/base.css">
+    <script src="source/js/jquery-3.4.1.min.js"></script>
+    <script src="source/js/login.js"></script>
+    <style>
+        input,button{
+            width: 80%;
+            height: 90%;
+            font-size: 20px;
+            padding-left: 10px;
+            border-style: solid;
+            border-radius: 20px;
+            outline-style: none;
+        }
+        input{
+            color: gray;
+            border-color: black;
+        }
+        form{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /*justify-content: center;*/
+        }
+
+        .item{
+            width: 500px;
+            height: 50px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
-<body>
-    login
+<body style="overflow-y: hidden">
+<div style="width: 100%;height: 100%">
+    <div class="topBar">
+        <div style="margin-left: 100px">
+            <img src="source/image/Kiwi.png" width="80px" height="80px">
+        </div>
+        <div style="margin-left: 60px;font-size: 38px;">
+            <p>KiwiTodo</p>
+        </div>
+        <div class="menu">
+            <div><a href="index.html">首页</a></div>
+            <div><a href="xxx.html">历史纪录</a></div>
+            <div><a href="xxx.html">设置</a></div>
+        </div>
+    </div>
+    <div class="mainContainer" style="background-color: #d0d0d0">
+        <div style="width: 600px;height: 800px;border-style: solid;border-radius: 25px;justify-content: flex-start;flex-direction: column">
+            <div style="width: 100%;height: 65px;border-bottom-style: solid;padding-top: 25px;padding-bottom: 10px">
+                <div id="login" style="width: 200px;height:60px;border: solid;margin: 10px;border-radius: 20px;cursor: pointer">
+                    <h1>登陆</h1>
+                </div>
+                <div id="register" style="width: 200px;height:60px;border: solid;margin: 10px;border-radius: 20px;cursor: pointer">
+                    <h1>注册</h1>
+                </div>
+            </div>
+            <div id="infomation" style="width: 100%;height: 25px;padding-top: 40px;background-color: white;color: #BF242A"></div>
+            <div style="width: 100%;height: 440px;margin-top: 0px;padding-top:10px;background-color: white;">
+                <div id="loginPanel" style="width: 100%;height: 100%;display: flex;flex-direction: column;justify-content: flex-start">
+                    <form action="user" method="post">
+                        <div class="item">
+                            <input type="hidden" name="type" value="login">
+                            <input type="text" id="userName" name="phoneNumber" placeholder="请输入手机号码" maxlength="11">
+                        </div>
+                        <div class="item">
+                            <input type="password" id="pwd" name="password" placeholder="请输入密码" maxlength="20">
+                        </div>
+                        <div class="item">
+                            <button type="submit" id="doLogin" style="margin-right: 10px;cursor: pointer">确定</button>
+                            <button type="reset" style="margin-left: 10px;cursor: pointer">重置</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="registerPanel" style="width: 100%;height: 100%;display: none;flex-direction: column;justify-content: flex-start">
+                    <form>
+                        <div class="item">
+                            <input type="hidden" name="type" value="register">
+                            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="请输入手机号码" maxlength="11">
+                        </div>
+                        <div class="item">
+                            <input type="password" id="password" name="password" placeholder="请输入密码,8-20位,仅限字母和数字的组合" maxlength="20">
+                        </div>
+                        <div class="item">
+                            <input type="password" id="confirm" name="confirm" placeholder="请确认密码" maxlength="20">
+                        </div>
+                        <div class="item">
+                            <button type="button" id="doRegister" style="margin-right: 10px;cursor: pointer" disabled="disabled">确定</button>
+                            <button type="reset" style="margin-left: 10px;cursor: pointer">重置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
