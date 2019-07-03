@@ -79,20 +79,20 @@
                     </form>
                 </div>
                 <div id="registerPanel" style="width: 100%;height: 100%;display: none;flex-direction: column;justify-content: flex-start">
-                    <form>
+                    <form action="user" method="post">
                         <div class="item">
                             <input type="hidden" name="type" value="register">
                             <input type="text" id="phoneNumber" name="phoneNumber" placeholder="请输入手机号码" maxlength="11">
                         </div>
                         <div class="item">
-                            <input type="password" id="password" name="password" placeholder="请输入密码,8-20位,仅限字母和数字的组合" maxlength="20">
+                            <input type="password" id="password" name="password" disabled="disabled" placeholder="请输入密码,8-20位,仅限字母和数字的组合" maxlength="20">
                         </div>
                         <div class="item">
-                            <input type="password" id="confirm" name="confirm" placeholder="请确认密码" maxlength="20">
+                            <input type="password" id="confirm" name="confirm" disabled="disabled" placeholder="请确认密码" maxlength="20">
                         </div>
                         <div class="item">
-                            <button type="button" id="doRegister" style="margin-right: 10px;cursor: pointer" disabled="disabled">确定</button>
-                            <button type="reset" style="margin-left: 10px;cursor: pointer">重置</button>
+                            <button type="button" id="doRegister" style="margin-right: 10px;cursor: pointer" disabled="disabled" onclick="register()">确定</button>
+                            <button type="reset"  id="resetRegister" style="margin-left: 10px;cursor: pointer">重置</button>
                         </div>
                     </form>
                 </div>
