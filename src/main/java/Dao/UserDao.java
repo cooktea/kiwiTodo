@@ -4,8 +4,31 @@ import Utils.Database;
 import java.sql.*;
 
 
-public class UserDao {
+public class UserDao extends myDao{
     public UserDao(){
+    }
+    public boolean login(User user){
+        Connection con = new Database().getConnection();
+        String sql = String.format("select * from user where phoneNumber = \"%s\" and password = \"%s\"",user.getPhoneNumber(),user.getPwd());
+        Statement stmt = null;
+        try {
+            stmt = con.createStatement();
+            ResultSet res = stmt.executeQuery(sql);
+            while(res.next()){
+                user.setId(res.getString("id"));
+                user.setPhoneNumber(res.getString("phoneNumber"));
+                user.setPwd(res.getString("password"));
+                user.setEmail(res.getString("email"));
+                user.setUserName("name");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            close(con,stmt);
+        }
+        return false;
     }
 
     public boolean register(User user){
@@ -47,23 +70,6 @@ public class UserDao {
             close(con,stmt);
         }
         return user;
-    }
-
-    private void close(Connection con,Statement stmt){
-        if(null != stmt){
-            try {
-                stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        if (null != con){
-            try {
-                con.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public static void main(String[] args) {

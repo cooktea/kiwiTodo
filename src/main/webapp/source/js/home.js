@@ -25,6 +25,18 @@ $(document).ready(function () {
         )
     })
 });
+$(document).ready(function () {
+    var user = $.cookie("user");
+    console.log(user);
+    console.log(user.length);
+    if(user.length == 11){
+        $("#user").text(user);
+        $("#user").attr("href","home.html");
+    } else {
+
+    }
+
+});
 
 function beSelected(item) {
     level1 = "background-color:#BF242A";
@@ -45,17 +57,6 @@ function avaiNumber(input) {
     document.getElementById("charNumber").innerText = 70-number;
 }
 
-function overItem(item) {
-
-}
-
-function outItem(item) {
-
-}
-
-function test() {
-    console.log("xxx");
-}
 
 
 

@@ -41,13 +41,13 @@ function isPhoneNumberok() {
         return true;
     }
     $.post(
+        //todo 修改url
         "http://localhost:8080/kiwiTodo_war_exploded/user",
         {
             type:"getUser",
             phoneNumber:$("#phoneNumber").val()
         },
         function (data,status) {
-            //todo 验证是否有用户
             if(status == "success"){
                 if(data.length == 10){
                     console.log("用户已存在");
@@ -97,6 +97,7 @@ function register() {
     var number = $("#phoneNumber").val();
     var pwd = $("#password").val();
     $.post(
+        //todo 修改url
         "http://localhost:8080/kiwiTodo_war_exploded/user",
         {
             type:"register",

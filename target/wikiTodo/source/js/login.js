@@ -113,6 +113,7 @@ function register() {
                     setTimeout(function () {
                         $("#loginPanel").css("display","flex");
                         $("#registerPanel").css("display","none");
+                        $("#infomation").text("");
                     },3000)
                 } else {
                     $("#infomation").text("注册失败");
