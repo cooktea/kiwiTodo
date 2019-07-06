@@ -59,7 +59,6 @@ function getTodos() {
             }
             $(".command").append("<img src=\"source/image/hook.png\">");
             $(".command").append("<img src=\"source/image/fork.png\">");
-            // appendTodo(data[0]);
         }
     )
 }
@@ -71,8 +70,6 @@ function appendTodo(todo) {
     $("#todo-"+todo.id).append("<div class='content'>"+todo.content+"</div>");
     $("#todo-"+todo.id).append("<div class='time'>"+todo.time+"</div>");
     $("#todo-"+todo.id).append("<div class='command'></div>");
-    $("#todo-"+todo.id+".command").append("<img src=\"source/image/hook.png\">");
-    $("#todo-"+todo.id+".command").append("<img src=\"source/image/fork.png\">");
 }
 
 function beSelected(item) {

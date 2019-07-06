@@ -59,10 +59,6 @@ function getTodos() {
             }
             $(".command").append("<img src=\"source/image/hook.png\">");
             $(".command").append("<img src=\"source/image/fork.png\">");
-            for(var i=0;i<data.length;i++){
-                appendTodo(data[i]);
-                console.log("\n");
-            }
         }
     )
 }
