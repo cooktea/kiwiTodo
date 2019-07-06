@@ -11,14 +11,13 @@ import java.sql.Statement;
 import java.util.*;
 
 public class TodoDao extends myDao{
-    private todoItem todo = null;
     private User user = null;
     private Database db = new Database();
 
     public List<todoItem> getTodos(){
         Connection con = db.getConnection();
         Statement statement = null;
-        String sql = String.format("select * from todo where user = %s",user.getId());
+        String sql = String.format("select * from todo where user = %s order by level,id desc",user.getId());
         List<todoItem> todos = new ArrayList<>();
         try {
             statement = con.createStatement();
@@ -42,7 +41,7 @@ public class TodoDao extends myDao{
         return todos;
     }
 
-    public boolean push(){
+    public boolean push(todoItem todo){
         Connection con = db.getConnection();
         Statement statement = null;
         String sql = String.format("insert into todo(user,content,level,time) values (%s,\"%s\",%s,\"%s\")",user.getId(),todo.getContent(),todo.getLevel(),todo.getTime());
@@ -63,29 +62,12 @@ public class TodoDao extends myDao{
 
     }
 
-    public TodoDao(todoItem todo, User user) {
-        this.todo = todo;
-        this.user = user;
-    }
-
-    public TodoDao(todoItem todo) {
-        this.todo = todo;
-    }
-
     public TodoDao(User user) {
         this.user = user;
     }
 
-    public void setTodo(todoItem todo) {
-        this.todo = todo;
-    }
-
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public todoItem getTodo() {
-        return todo;
     }
 
     public User getUser() {
