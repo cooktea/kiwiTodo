@@ -24,12 +24,12 @@
 <!--  -->
 
   <servlet>
-    <servlet-name>Pushtodo</servlet-name>
-    <servlet-class>servlet.pushtodo</servlet-class>
+    <servlet-name>Todo</servlet-name>
+    <servlet-class>servlet.Todo</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Pushtodo</servlet-name>
-    <url-pattern>/pushTodo</url-pattern>
+    <servlet-name>Todo</servlet-name>
+    <url-pattern>/todo</url-pattern>
   </servlet-mapping>
 <!---->
   <servlet>

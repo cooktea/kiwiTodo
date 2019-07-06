@@ -13,10 +13,11 @@ $(document).ready(function () {
         console.log("content:"+content);
         $.post(
             //todo 修改url
-            "http://localhost:8080/kiwiTodo_war_exploded/pushTodo",
+            "http://localhost:8080/kiwiTodo_war_exploded/todo",
             {
                 level:level,
-                content:content
+                content:content,
+                type:"pushTodo"
             },
             function (data,status) {
                 console.log(status);
@@ -37,6 +38,43 @@ $(document).ready(function () {
     }
 
 });
+
+$(document).ready(function () {
+    getTodos();
+});
+
+function getTodos() {
+    $.getJSON(
+        //todo 修改url
+        "http://localhost:8080/kiwiTodo_war_exploded/todo",
+        {
+            type:"getTodo"
+        },
+        function (data,status) {
+            console.log(status);
+            console.log(data.length);
+            for(var i=0;i<data.length;i++){
+                appendTodo(data[i]);
+                console.log("\n");
+            }
+            $(".command").append("<img src=\"source/image/hook.png\">");
+            $(".command").append("<img src=\"source/image/fork.png\">");
+            for(var i=0;i<data.length;i++){
+                appendTodo(data[i]);
+                console.log("\n");
+            }
+        }
+    )
+}
+
+function appendTodo(todo) {
+    console.log(todo);
+    $(".mainContainer").append("<div class='todoItem' id='todo-"+todo.id+"'></div>");
+    $("#todo-"+todo.id).append("<div class='id-level-"+todo.level+"'>"+todo.id+"</div>");
+    $("#todo-"+todo.id).append("<div class='content'>"+todo.content+"</div>");
+    $("#todo-"+todo.id).append("<div class='time'>"+todo.time+"</div>");
+    $("#todo-"+todo.id).append("<div class='command'></div>");
+}
 
 function beSelected(item) {
     level1 = "background-color:#BF242A";

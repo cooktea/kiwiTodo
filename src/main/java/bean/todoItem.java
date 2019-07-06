@@ -78,5 +78,4 @@ public class todoItem {
         todo.setStstus("1");
         System.out.println(new JSONObject(todo).toString());
     }
-
 }
