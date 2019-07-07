@@ -14,6 +14,7 @@ import bean.todoItem;
 import Dao.TodoDao;
 import Dao.UserDao;
 import Utils.userUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 @WebServlet(name = "pushtodo")
@@ -36,20 +37,36 @@ public class Todo extends HttpServlet {
                 String level = request.getParameter("level");
                 String conten = request.getParameter("content");
                 todoItem todo = new todoItem(level,conten);
-                //todo 返回成功或失败的信息
+                //todo 返回失败的信息
                 if(todoDao.push(todo)){
-                    System.out.println("添加成功");
+                    response.getWriter().println("success");
                 } else {
-                    System.out.println("添加失败");
+                    response.getWriter().println("faild");
                 }
             } else if(type.equals("getTodo")){  //获取用户的所有todo
                 List<todoItem> todos = todoDao.getTodos();
-                JSONObject json = new JSONObject();
-                json.put("length", todos.size());
-                for (todoItem todo:todos){
-                    json.put(String.valueOf(todo.getId()),new JSONObject(todo));
+                JSONArray json = new JSONArray();
+//                json.put("length", todos.size());
+                for (int i=0;i<todos.size();i++){
+                    json.put(i,new JSONObject(todos.get(i)));
                 }
                 response.getWriter().println(json.toString());
+            } else if (type.equals("finish")){
+                String id = request.getParameter("id");
+                System.out.println(id);
+                if(todoDao.finishTodo(id)){
+                    response.getWriter().println("success");
+                } else {
+                    response.getWriter().println("faild");
+                }
+            }else if (type.equals("remove")){
+                String id = request.getParameter("id");
+                System.out.println(id);
+                if(todoDao.removeTodo(id)){
+                    response.getWriter().println("success");
+                } else {
+                    response.getWriter().println("faild");
+                }
             }
         }
     }

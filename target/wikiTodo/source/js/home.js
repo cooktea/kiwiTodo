@@ -20,8 +20,13 @@ $(document).ready(function () {
                 type:"pushTodo"
             },
             function (data,status) {
-                console.log(status);
-                console.log(data);
+                // console.log(data.length);
+                if(data.length == 9){
+                    alert("添加成功");
+                    window.location.reload();
+                } else {
+                    alert("添加失败");
+                }
             }
         )
     })
@@ -53,23 +58,71 @@ function getTodos() {
         function (data,status) {
             console.log(status);
             console.log(data.length);
+            console.log(data);
             for(var i=0;i<data.length;i++){
-                appendTodo(data[i]);
-                console.log("\n");
+                appendTodo(data[i],i+1);
             }
-            $(".command").append("<img src=\"source/image/hook.png\">");
-            $(".command").append("<img src=\"source/image/fork.png\">");
+            $("[src='source/image/hook.png']").mouseover(function () {
+                this.src = "source/image/hook-blue.png"
+            });
+            $("[src='source/image/hook.png']").mouseout(function () {
+                this.src = "source/image/hook.png"
+            });
+            $("[src='source/image/fork.png']").mouseover(function () {
+                this.src = "source/image/fork-blue.png"
+            });
+            $("[src='source/image/fork.png']").mouseout(function () {
+                this.src = "source/image/fork.png"
+            });
         }
     )
 }
 
-function appendTodo(todo) {
-    console.log(todo);
-    $(".mainContainer").append("<div class='todoItem' id='todo-"+todo.id+"'></div>");
-    $("#todo-"+todo.id).append("<div class='id-level-"+todo.level+"'>"+todo.id+"</div>");
-    $("#todo-"+todo.id).append("<div class='content'>"+todo.content+"</div>");
-    $("#todo-"+todo.id).append("<div class='time'>"+todo.time+"</div>");
-    $("#todo-"+todo.id).append("<div class='command'></div>");
+function appendTodo(todo,idx) {
+    $(".mainContainer").append("<div class='todoItem' id='todo-"+idx+"'></div>");
+    $("#todo-"+idx).append("<div class='id-level-"+todo.level+"'>"+idx+"</div>");
+    $("#todo-"+idx).append("<div class='content'>"+todo.content+"</div>");
+    $("#todo-"+idx).append("<div class='time'>"+todo.time+"</div>");
+    $("#todo-"+idx).append("<div class='command' id='command-"+idx+"'></div>");
+    $("#command-"+idx).append("<img src=\"source/image/hook.png\" onclick='finish("+todo.id+","+idx+")'>");
+    $("#command-"+idx).append("<img src=\"source/image/fork.png\" onclick='remove("+todo.id+","+idx+")'>");
+}
+
+function finish(id,idx) {
+    $.post(
+        "http://localhost:8080/kiwiTodo_war_exploded/todo",
+        {
+            type:"finish",
+            id:id
+        },
+        function (data,status) {
+            if(data.length == 9){
+                $("#todo-"+idx).fadeOut(1000,function () {
+                    this.remove()
+                });
+            } else {
+                alert("更改状态失败");
+            }
+        }
+    )
+}
+function remove(id,idx){
+    $.post(
+        "http://localhost:8080/kiwiTodo_war_exploded/todo",
+        {
+            type:"remove",
+            id:id
+        },
+        function (data,status) {
+            if(data.length == 9){
+                $("#todo-"+idx).fadeOut(1000,function () {
+                    this.remove()
+                });
+            } else {
+                alert("移除失败");
+            }
+        }
+    )
 }
 
 function beSelected(item) {

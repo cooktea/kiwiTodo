@@ -14,23 +14,50 @@ public class TodoDao extends myDao{
     private User user = null;
     private Database db = new Database();
 
+
+    public boolean removeTodo(String id){
+        Connection con = db.getConnection();
+        Statement statement = null;
+        String sql = String.format("update todo set status = 3 where id = %s",id);
+        try {
+            statement = con.createStatement();
+            statement.executeUpdate(sql);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean finishTodo(String id){
+        Connection con = db.getConnection();
+        Statement statement = null;
+        String sql = String.format("update todo set status = 2 where id = %s",id);
+        try {
+            statement = con.createStatement();
+            statement.executeUpdate(sql);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public List<todoItem> getTodos(){
         Connection con = db.getConnection();
         Statement statement = null;
-        String sql = String.format("select * from todo where user = %s order by level,id desc",user.getId());
+        String sql = String.format("select * from todo where user = %s and status = 1 order by level,id desc",user.getId());
         List<todoItem> todos = new ArrayList<>();
         try {
             statement = con.createStatement();
             ResultSet res = statement.executeQuery(sql);
-            int count = 0;
             while (res.next()){
                 todoItem todo = new todoItem();
                 todo.setContent(res.getString("content"));
                 todo.setLevel(res.getString("level"));
                 todo.setStstus(res.getString("status"));
                 todo.setTime(res.getString("time"));
-                todo.setId(count);
-                count++;
+                todo.setId(res.getInt("id"));
                 todos.add(todo);
             }
         } catch (SQLException e) {
