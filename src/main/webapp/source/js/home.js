@@ -32,22 +32,8 @@ $(document).ready(function () {
     })
 });
 $(document).ready(function () {
-    var user = $.cookie("user");
-    console.log(user);
-    console.log(user.length);
-    if(user.length == 11){
-        $("#user").text(user);
-        $("#user").attr("href","home.html");
-    } else {
-
-    }
-
-});
-
-$(document).ready(function () {
     getTodos();
 });
-
 function getTodos() {
     $.getJSON(
         //todo 修改url

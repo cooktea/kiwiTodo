@@ -6,9 +6,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.Utilities;
 import java.io.IOException;
 import Dao.UserDao;
 import bean.*;
+import Utils.userUtils;
 
 @WebServlet(name = "User")
 public class User extends HttpServlet {
@@ -55,7 +57,23 @@ public class User extends HttpServlet {
                 response.getWriter().println("faild");
 //                System.out.println("注册失败");
             }
-        } else {
+        } else if (type.equals("logout")){
+            Cookie[] cookies = request.getCookies();
+            Cookie cookie = null;
+            for (int i=0;i<cookies.length;i++){
+                if(cookies[i].getName().equals("user")){
+                    cookie = cookies[i];
+                    break;
+                }
+            }
+            if(null != cookie){
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+                response.sendRedirect("index");
+            } else {
+                response.getWriter().println("退出登陆失败，请稍后再试");
+                response.setHeader("refresh","3,URL=index.html");
+            }
         }
     }
 }
