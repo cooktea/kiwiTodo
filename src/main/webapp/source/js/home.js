@@ -9,8 +9,10 @@ $(document).ready(function () {
     $("#pushTodo").click(function () {
         var level = $("#level").val();
         var content = $("#todoContent").val();
-        console.log("level:"+level);
-        console.log("content:"+content);
+        if(content.length == 0){
+            alert("请输入内容");
+            return;
+        }
         $.post(
             //todo 修改url
             "http://localhost:8080/kiwiTodo_war_exploded/todo",
