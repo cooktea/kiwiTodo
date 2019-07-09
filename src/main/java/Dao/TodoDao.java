@@ -15,6 +15,34 @@ public class TodoDao extends myDao{
     private Database db = new Database();
 
 
+    public boolean deleteTodo(String id){
+        Connection con = db.getConnection();
+        Statement statement = null;
+        String sql = String.format("delete from todo where id = %s",id);
+        try {
+            statement = con.createStatement();
+            statement.executeUpdate(sql);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean activeTodo(String id){
+        Connection con = db.getConnection();
+        Statement statement = null;
+        String sql = String.format("update todo set status = 1 where id = %s",id);
+        try {
+            statement = con.createStatement();
+            statement.executeUpdate(sql);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean removeTodo(String id){
         Connection con = db.getConnection();
         Statement statement = null;

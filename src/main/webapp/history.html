@@ -167,6 +167,7 @@
         getFinished();
         getDeleted();
     });
+
     function getFinished() {
         $.getJSON(
             //todo 更改URL
@@ -175,9 +176,7 @@
                 type:"getFinished"
             },
             function (data) {
-                for(var i=0;i<data.length;i++){
-                    appendTodo("#finished",data[i],i)
-                }
+                addTodos(data,"finished");
             }
         )
     }
@@ -190,21 +189,78 @@
                 type:"getDeleted"
             },
             function (data) {
-                for(var i=0;i<data.length;i++){
-                    appendTodo("#deleted",data[i],i)
+                addTodos(data,"deleted");
+            }
+        )
+    }
+
+    function addTodos(data,container){
+        for(var i=0;i<data.length;i++){
+            appendTodo(container,data[i],i)
+        }
+        $("[src='source/image/cancel-white.png']").mouseover(function () {
+            this.src = "source/image/cancel-blue.png"
+        });
+        $("[src='source/image/cancel-white.png']").mouseout(function () {
+            this.src = "source/image/cancel-white.png"
+        });
+        $("[src='source/image/delete-white.png']").mouseover(function () {
+            this.src = "source/image/delete-blue.png"
+        });
+        $("[src='source/image/delete-white.png']").mouseout(function () {
+            this.src = "source/image/delete-white.png"
+        });
+
+    }
+
+    function appendTodo(container,todo,idx) {
+        $("#"+container).append("<div class='todoItem' id='todo-"+idx+"-"+container+"'></div>");
+        $("#todo-"+idx+"-"+container).append("<div class='id-level-"+todo.level+"'>"+idx+"</div>");
+        $("#todo-"+idx+"-"+container).append("<div class='content'>"+todo.content+"</div>");
+        $("#todo-"+idx+"-"+container).append("<div class='time'>"+todo.time+"</div>");
+        $("#todo-"+idx+"-"+container).append("<div class='command' id='command-"+idx+"-"+container+"'></div>");
+        $("#command-"+idx+"-"+container).append("<img src=\"source/image/cancel-white.png\" onclick='cancel("+todo.id+","+idx+","+"\""+container+"\""+")' >");
+        $("#command-"+idx+"-"+container).append("<img src=\"source/image/delete-white.png\" onclick='Delete("+todo.id+","+idx+","+"\""+container+"\""+")' >");
+    }
+
+    function cancel(id,index,type) {
+        idx = "#todo-"+index+"-"+type;
+        $.post(
+            "http://localhost:8080/kiwiTodo_war_exploded/todo",
+            {
+                type:"cancel",
+                id:id
+            },
+            function (data,status) {
+                if(data.length == 9){
+                    $(idx).fadeOut(1000,function () {
+                        this.remove()
+                    });
+                } else {
+                    alert("移除失败");
                 }
             }
         )
     }
 
-    function appendTodo(container,todo,idx) {
-        console.log(todo);
-        $(container).append("<div class='todoItem' id='todo-"+idx+"'></div>");
-        $("#todo-"+idx).append("<div class='id-level-"+todo.level+"'>"+idx+"</div>");
-        $("#todo-"+idx).append("<div class='content'>"+todo.content+"</div>");
-        $("#todo-"+idx).append("<div class='time'>"+todo.time+"</div>");
-        $("#todo-"+idx).append("<div class='command' id='command-"+idx+"'></div>");
-        $("#command-"+idx).append("<img src=\"source/image/cancel-white.png\" onclick='finish("+todo.id+","+idx+")'>");
-        $("#command-"+idx).append("<img src=\"source/image/delete-white.png\" onclick='remove("+todo.id+","+idx+")'>");
+    function Delete(id,index,type) {
+        idx = "#todo-"+index+"-"+type;
+        $.post(
+            "http://localhost:8080/kiwiTodo_war_exploded/todo",
+            {
+                type:"delete",
+                id:id
+            },
+            function (data,status) {
+                if(data.length == 9){
+                    $(idx).fadeOut(1000,function () {
+                        this.remove()
+                    });
+                } else {
+                    alert("移除失败");
+                }
+            }
+        )
     }
+
 </script>

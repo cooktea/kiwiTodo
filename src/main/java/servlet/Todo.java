@@ -83,6 +83,22 @@ public class Todo extends HttpServlet {
                 } else {
                     response.getWriter().println("faild");
                 }
+            }else if(type.equals("cancel")){
+                String id = request.getParameter("id");
+                System.out.println(id);
+                if(todoDao.activeTodo(id)){
+                    response.getWriter().println("success");
+                } else {
+                    response.getWriter().println("faild");
+                }
+            }else if (type.equals("delete")){
+                String id = request.getParameter("id");
+                System.out.println(id);
+                if(todoDao.deleteTodo(id)){
+                    response.getWriter().println("success");
+                } else {
+                    response.getWriter().println("faild");
+                }
             }
         }
     }
