@@ -43,10 +43,10 @@ public class TodoDao extends myDao{
         return false;
     }
 
-    public List<todoItem> getTodos(){
+    public List<todoItem> getTodos(int status){
         Connection con = db.getConnection();
         Statement statement = null;
-        String sql = String.format("select * from todo where user = %s and status = 1 order by level,id desc",user.getId());
+        String sql = String.format("select * from todo where user = %s and status = %d order by level,id desc",user.getId(),status);
         List<todoItem> todos = new ArrayList<>();
         try {
             statement = con.createStatement();
@@ -105,7 +105,7 @@ public class TodoDao extends myDao{
         User user = new User("18936023725","19972279999");
         user.setId("1");
         TodoDao dao = new TodoDao(user);
-        List<todoItem> todos = dao.getTodos();
+        List<todoItem> todos = dao.getTodos(2);
         for (todoItem todo:todos){
             System.out.println(new JSONObject(todo).toString());
         }

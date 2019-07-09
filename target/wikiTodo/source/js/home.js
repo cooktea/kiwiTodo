@@ -1,16 +1,18 @@
 
 $(document).ready(function () {
     $("#pushTodo").mouseover(function () {
-        this.src = "source/image/cross-red.png"
+        this.src = "source/image/commit-blue.png"
     })
     $("#pushTodo").mouseout(function () {
-        this.src = "source/image/cross-blue.png"
+        this.src = "source/image/commit-white.png"
     });
     $("#pushTodo").click(function () {
         var level = $("#level").val();
         var content = $("#todoContent").val();
-        console.log("level:"+level);
-        console.log("content:"+content);
+        if(content.length == 0){
+            alert("请输入内容");
+            return;
+        }
         $.post(
             //todo 修改url
             "http://localhost:8080/kiwiTodo_war_exploded/todo",
@@ -42,23 +44,20 @@ function getTodos() {
             type:"getTodo"
         },
         function (data,status) {
-            console.log(status);
-            console.log(data.length);
-            console.log(data);
             for(var i=0;i<data.length;i++){
                 appendTodo(data[i],i+1);
             }
-            $("[src='source/image/hook.png']").mouseover(function () {
-                this.src = "source/image/hook-blue.png"
+            $("[src='source/image/finish-white.png']").mouseover(function () {
+                this.src = "source/image/finish-blue.png"
             });
-            $("[src='source/image/hook.png']").mouseout(function () {
-                this.src = "source/image/hook.png"
+            $("[src='source/image/finish-white.png']").mouseout(function () {
+                this.src = "source/image/finish-white.png"
             });
-            $("[src='source/image/fork.png']").mouseover(function () {
-                this.src = "source/image/fork-blue.png"
+            $("[src='source/image/delete-white.png']").mouseover(function () {
+                this.src = "source/image/delete-blue.png"
             });
-            $("[src='source/image/fork.png']").mouseout(function () {
-                this.src = "source/image/fork.png"
+            $("[src='source/image/delete-white.png']").mouseout(function () {
+                this.src = "source/image/delete-white.png"
             });
         }
     )
@@ -70,8 +69,8 @@ function appendTodo(todo,idx) {
     $("#todo-"+idx).append("<div class='content'>"+todo.content+"</div>");
     $("#todo-"+idx).append("<div class='time'>"+todo.time+"</div>");
     $("#todo-"+idx).append("<div class='command' id='command-"+idx+"'></div>");
-    $("#command-"+idx).append("<img src=\"source/image/hook.png\" onclick='finish("+todo.id+","+idx+")'>");
-    $("#command-"+idx).append("<img src=\"source/image/fork.png\" onclick='remove("+todo.id+","+idx+")'>");
+    $("#command-"+idx).append("<img src=\"source/image/finish-white.png\" onclick='finish("+todo.id+","+idx+")'>");
+    $("#command-"+idx).append("<img src=\"source/image/delete-white.png\" onclick='remove("+todo.id+","+idx+")'>");
 }
 
 function finish(id,idx) {

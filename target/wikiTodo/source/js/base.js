@@ -1,7 +1,5 @@
 $(document).ready(function () {
     var user = $.cookie("user");
-    console.log(user);
-    console.log(user.length);
     if(user){
         if(user.length == 11){
             $("#logOrReg").hide();

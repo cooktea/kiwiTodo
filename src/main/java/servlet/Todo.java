@@ -44,14 +44,30 @@ public class Todo extends HttpServlet {
                     response.getWriter().println("faild");
                 }
             } else if(type.equals("getTodo")){  //获取用户的所有todo
-                List<todoItem> todos = todoDao.getTodos();
+                List<todoItem> todos = todoDao.getTodos(1);
                 JSONArray json = new JSONArray();
 //                json.put("length", todos.size());
                 for (int i=0;i<todos.size();i++){
                     json.put(i,new JSONObject(todos.get(i)));
                 }
                 response.getWriter().println(json.toString());
-            } else if (type.equals("finish")){
+            } else  if (type.equals("getFinished")){
+                List<todoItem> todos = todoDao.getTodos(2);
+                JSONArray json = new JSONArray();
+//                json.put("length", todos.size());
+                for (int i=0;i<todos.size();i++){
+                    json.put(i,new JSONObject(todos.get(i)));
+                }
+                response.getWriter().println(json.toString());
+            } else if (type.equals("getDeleted")){
+                List<todoItem> todos = todoDao.getTodos(3);
+                JSONArray json = new JSONArray();
+//                json.put("length", todos.size());
+                for (int i=0;i<todos.size();i++){
+                    json.put(i,new JSONObject(todos.get(i)));
+                }
+                response.getWriter().println(json.toString());
+            }else if (type.equals("finish")){
                 String id = request.getParameter("id");
                 System.out.println(id);
                 if(todoDao.finishTodo(id)){

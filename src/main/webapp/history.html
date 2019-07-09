@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>历史纪录</title>
+    <link rel="stylesheet" type="text/css" href="source/style/base.css">
+    <script type="text/javascript" src="source/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="source/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="source/js/base.js"></script>
+    <style>
+        .todoItem{
+            width: 1000px;
+            height: 60px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            background-color: #1e50a2;
+            justify-content: left;
+            color: white;
+        }
+        .time{
+            padding-left: 20px;
+            padding-right: 20px;
+            border-left: solid;
+            height: 50px;
+            width: 100px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .command{
+            padding-left: 20px;
+            padding-right: 20px;
+            border-left: solid;
+            height: 50px;
+            width: 100px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .command img{
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+        }
+        .id-level-3{
+            width: 50px;
+            height: 50px;
+            margin-left: 25px;
+            margin-right: 25px;
+            border-radius: 25px;
+            border: solid;
+            background-color: #A0D8EF;
+            font-size: 25px;
+            color: white;
+        }
+
+        .id-level-1{
+            width: 50px;
+            height: 50px;
+            margin-left: 25px;
+            margin-right: 25px;
+            border-radius: 25px;
+            border: solid;
+            background-color: #BF242A;
+            font-size: 25px;
+            color: white;
+        }
+
+        .id-level-2{
+            width: 50px;
+            height: 50px;
+            margin-left: 25px;
+            margin-right: 25px;
+            border-radius: 25px;
+            border: solid;
+            background-color: #F5B1AA;
+            font-size: 25px;
+            color: white;
+        }
+
+        .content{
+            margin-left: 5px;
+            padding-left: 15px;
+            border-left: solid;
+            height: 50px;
+            width: 590px;
+            justify-content: left;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div style="width: 100%;height: 100%">
+    <div class="topBar">
+        <div style="margin-left: 100px">
+            <img src="source/image/Kiwi.png" width="80px" height="80px">
+        </div>
+        <div style="margin-left: 60px;font-size: 38px;">
+            <p>KiwiTodo</p>
+        </div>
+        <div class="menu">
+            <div><a href="index.html">首页</a></div>
+            <div><a href="history.html">历史纪录</a></div>
+            <div><a href="xxx.html">Settings</a></div>
+        </div>
+        <div style="position: absolute;right: 80px;top: 40px;width: 150px;height: 300px;justify-content: flex-end;align-items: flex-start;">
+            <div style="flex-direction: column;width: 100%" >
+                <div style="display: flex;flex-direction: column">
+                    <a id="logOrReg" href="login.html" style="color: blue">登陆/注册</a>
+                </div>
+                <div style="display: flex;flex-direction: column" id="menu">
+                    <a id="user" href="home.html" style="color:blue;display: none"></a>
+                    <ul style="display: none">
+                        <a href="home.html">个人中心</a>
+                        <a href="user?type=logout">退出登陆</a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mainContainer" style="background-color: white">
+        <div style="width: 100%;height: 100px;background-color:#A0D8EF;justify-content: flex-end;align-items: flex-start;margin-bottom: 20px">
+            <div style="height: 100px;width: 100px">
+
+            </div>
+            <div style="width: 800px;height: 100px;background-color: #A0D8EF">
+                <h1 id="title">已完成</h1>
+            </div>
+            <div style="width: 100px;height: 100px" id="switch">
+                <img src="source/image/switch-blue.png" style="width: 50px;height: 50px;">
+            </div>
+        </div>
+        <div id="finished" style="width: 100%;flex-direction: column">
+
+        </div>
+        <div id="deleted" style="width: 100%;flex-direction: column">
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script>
+    $(document).ready(function () {
+        $("#deleted").hide();
+        $("#switch").mouseover(function () {
+            console.log("xxx");
+            $(this).children("img").attr("src","source/image/switch-red.png");
+        });
+        $("#switch").mouseout(function () {
+            console.log("xxxxx");
+            $(this).children("img").attr("src","source/image/switch-blue.png");
+        });
+        $("#switch").click(function () {
+            var title = $("#title").text();
+            if(title == "已完成"){
+                $("#title").text("已删除");
+                $("#deleted").show();
+                $("#finished").hide();
+            } else {
+                $("#title").text("已完成");
+                $("#deleted").hide();
+                $("#finished").show();
+            }
+        });
+        getFinished();
+        getDeleted();
+    });
+    function getFinished() {
+        $.getJSON(
+            //todo 更改URL
+            "http://localhost:8080/kiwiTodo_war_exploded/todo",
+            {
+                type:"getFinished"
+            },
+            function (data) {
+                for(var i=0;i<data.length;i++){
+                    appendTodo("#finished",data[i],i)
+                }
+            }
+        )
+    }
+
+    function getDeleted() {
+        $.getJSON(
+            //todo 更改URL
+            "http://localhost:8080/kiwiTodo_war_exploded/todo",
+            {
+                type:"getDeleted"
+            },
+            function (data) {
+                for(var i=0;i<data.length;i++){
+                    appendTodo("#deleted",data[i],i)
+                }
+            }
+        )
+    }
+
+    function appendTodo(container,todo,idx) {
+        console.log(todo);
+        $(container).append("<div class='todoItem' id='todo-"+idx+"'></div>");
+        $("#todo-"+idx).append("<div class='id-level-"+todo.level+"'>"+idx+"</div>");
+        $("#todo-"+idx).append("<div class='content'>"+todo.content+"</div>");
+        $("#todo-"+idx).append("<div class='time'>"+todo.time+"</div>");
+        $("#todo-"+idx).append("<div class='command' id='command-"+idx+"'></div>");
+        $("#command-"+idx).append("<img src=\"source/image/cancel-white.png\" onclick='finish("+todo.id+","+idx+")'>");
+        $("#command-"+idx).append("<img src=\"source/image/delete-white.png\" onclick='remove("+todo.id+","+idx+")'>");
+    }
+</script>
