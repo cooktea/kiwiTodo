@@ -36,12 +36,17 @@ a{
     border-left-style: solid;
     height: 100px;
     min-width: 600px;
+    justify-content: flex-start;
 }
 
 .menu div{
-    height: 80px;
+    height: 60px;
+    width: 140px;
     font-size: 26px;
-    margin: 20px;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 20px;
+    border-style: hidden;
 }
 
 .mainContainer{

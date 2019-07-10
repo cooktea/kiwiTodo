@@ -25,10 +25,14 @@ public class Todo extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        System.out.println("xxx");
+        long start = System.currentTimeMillis();
         String type = request.getParameter("type");
         TodoDao todoDao = new TodoDao();
+        System.out.println("响应花费了"+(System.currentTimeMillis()-start)+"ms");
         Cookie[] cookies = request.getCookies();
+        System.out.println("响应花费了"+(System.currentTimeMillis()-start)+"ms");
         User user = userUtils.getUser(cookies);
+        System.out.println("响应花费了"+(System.currentTimeMillis()-start)+"ms");
         if(null == user){
             response.sendRedirect("login");
         } else {
@@ -69,7 +73,6 @@ public class Todo extends HttpServlet {
                 response.getWriter().println(json.toString());
             }else if (type.equals("finish")){
                 String id = request.getParameter("id");
-                System.out.println(id);
                 if(todoDao.finishTodo(id)){
                     response.getWriter().println("success");
                 } else {
@@ -101,5 +104,6 @@ public class Todo extends HttpServlet {
                 }
             }
         }
+        System.out.println("响应花费了"+(System.currentTimeMillis()-start)+"ms");
     }
 }

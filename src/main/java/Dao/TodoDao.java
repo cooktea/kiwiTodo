@@ -14,7 +14,6 @@ public class TodoDao extends myDao{
     private User user = null;
     private Database db = new Database();
 
-
     public boolean deleteTodo(String id){
         Connection con = db.getConnection();
         Statement statement = null;
@@ -72,6 +71,7 @@ public class TodoDao extends myDao{
     }
 
     public List<todoItem> getTodos(int status){
+        long start = System.currentTimeMillis();
         Connection con = db.getConnection();
         Statement statement = null;
         String sql = String.format("select * from todo where user = %s and status = %d order by level,id desc",user.getId(),status);
@@ -93,6 +93,8 @@ public class TodoDao extends myDao{
         } finally {
             close(con,statement);
         }
+        long end = System.currentTimeMillis();
+        System.out.println("数据库响应花费了"+(end-start)+"ms");
         return todos;
     }
 

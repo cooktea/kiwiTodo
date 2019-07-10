@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设置</title>
+    <link rel="stylesheet" type="text/css" href="source/style/base.css">
+    <script type="text/javascript" src="source/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="source/js/jquery.cookie.js"></script>
+    <style>
+        .setting{
+            width: 100%;
+            height: 60px;
+            /*background-color: #A0D8EF;*/
+            margin-top: 10px;
+        }
+        .content{
+            height: 100%;
+            width: 65%;
+            padding-left: 5%;
+            justify-content: flex-start;
+        }
+        .choice{
+            height: 100%;
+            width: 30%;
+            border-left:solid;
+        }
+        .switch{
+            margin: 20px;
+        }
+        .switch img{
+            height: 50px;
+            width: 50px;
+        }
+        .status{
+            margin: 20px;
+        }
+
+    </style>
+    <script>
+        $(document).ready(function () {
+            $(".switch").click(function () {
+                var id = $(this).attr("id");
+                console.log(id);
+                var src = $(this).children("img").attr("src");
+                if(src == "source/image/switch-open.png"){
+                    $.post(
+                        "http://localhost:8080/kiwiTodo_war_exploded/setting",
+                        {
+                            type:id,
+                            command:"close"
+                        },
+                        function(data){
+                            if (data.length == 9){
+                                $(this).children("img").attr("src","source/image/switch-close.png");
+                                $(this).next().children("h3").text("已关闭")
+                            } else {
+                                alert("修改失败")
+                            }
+                        }
+                    )
+                } else {
+                    $.post(
+                        "http://localhost:8080/kiwiTodo_war_exploded/setting",
+                        {
+                            type:id,
+                            command:"open"
+                        },
+                        function(data){
+                            if (data.length == 9){
+                                $(this).children("img").attr("src","source/image/switch-open.png");
+                                $(this).next().children("h3").text("已打开")
+                            } else {
+                                alert("修改失败")
+                            }
+                        }
+                    )
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+<div style="width: 100%;height: 100%">
+    <div class="topBar">
+        <div style="margin-left: 100px">
+            <img src="source/image/Kiwi.png" width="80px" height="80px">
+        </div>
+        <div style="margin-left: 60px;font-size: 38px;">
+            <p>KiwiTodo</p>
+        </div>
+        <div class="menu" >
+            <div><a href="index.html">首页</a></div>
+            <div><a href="history.html">历史纪录</a></div>
+            <div style="background-color: #1e50a2"><a style="color: white" href="setting.html">Settings</a></div>
+        </div>
+        <div style="position: absolute;right: 80px;top: 40px;width: 150px;height: 300px;justify-content: flex-end;align-items: flex-start;">
+            <div style="flex-direction: column;width: 100%" >
+                <div style="display: flex;flex-direction: column">
+                    <a id="logOrReg" href="login.html" style="color: blue">登陆/注册</a>
+                </div>
+                <div style="display: flex;flex-direction: column" id="menu">
+                    <a id="user" href="home.html" style="color:blue;display: none"></a>
+                    <ul style="display: none">
+                        <a href="home.html">个人中心</a>
+                        <a href="user?type=logout">退出登陆</a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mainContainer" style="padding-top: 50px;background-color: white">
+        <div class="setting">
+            <div class="content">
+                <h3>邮件推送服务</h3>
+            </div>
+            <div class="choice">
+                <div class="switch" id="emailPush">
+                    <img src="source/image/switch-open.png">
+                </div>
+                <div class="status">
+                    <h3>已打开</h3>
+                </div>
+            </div>
+        </div>
+        <div class="setting">
+            <div class="content">
+                <h3>自动清空已完成Todo</h3>
+            </div>
+            <div class="choice">
+                <div class="switch" id="autoClearFinish">
+                    <img src="source/image/switch-close.png">
+                </div>
+                <div class="status">
+                    <h3>已关闭</h3>
+                </div>
+            </div>
+        </div>
+        <div class="setting">
+            <div class="content">
+                <h3>自动清空已删除Todo</h3>
+            </div>
+            <div class="choice">
+                <div class="switch" id="autoClearDelete">
+                    <img src="source/image/switch-close.png">
+                </div>
+                <div class="status">
+                    <h3>已关闭</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

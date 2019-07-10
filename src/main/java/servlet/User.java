@@ -19,6 +19,7 @@ public class User extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        long start = System.currentTimeMillis();
         String type = request.getParameter("type");
         String number = request.getParameter("phoneNumber");
         String pwd = request.getParameter("password");
@@ -75,5 +76,7 @@ public class User extends HttpServlet {
                 response.setHeader("refresh","3,URL=index.html");
             }
         }
+        long end = System.currentTimeMillis();
+        System.out.println("响应花费了"+(end-start)+"ms");
     }
 }
