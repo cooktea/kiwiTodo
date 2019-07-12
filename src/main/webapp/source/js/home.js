@@ -1,3 +1,35 @@
+var sortTime = "up";
+var sortLevel = "up";
+var todos = undefined;
+
+$(document).ready(function () {
+    $("#sortLevel").click(function () {
+        sortByLevel(sortLevel);
+    });
+    $("#sortTime").click(function () {
+        sortByDate(sortTime);
+    });
+    $("#sortLevel").mouseover(function () {
+        $(this).children("img").attr("src","source/image/arrow-up-down-blue.png")
+    });
+    $("#sortLevel").mouseout(function () {
+        $(this).children("img").attr("src","source/image/arrow-up-down-white.png")
+    });
+    $("#sortTime").mouseover(function () {
+        $(this).children("img").attr("src","source/image/arrow-up-down-blue.png")
+    });
+    $("#sortTime").mouseout(function () {
+        $(this).children("img").attr("src","source/image/arrow-up-down-white.png")
+    });
+
+    $("[src='source/image/arrow-up-down-white.png']").mouseover(function () {
+        console.log("xxx");
+        this.src = "source/image/arrow-up-down-blue.png"
+    });
+    $("[src='source/image/arrow-up-down-white.png']").mouseout(function () {
+        this.src = "source/image/arrow-up-down-white.png"
+    });
+})
 
 $(document).ready(function () {
     $("#pushTodo").mouseover(function () {
@@ -44,6 +76,9 @@ function getTodos() {
             type:"getTodo"
         },
         function (data,status) {
+            todos = data;
+            console.log(data);
+            console.log(todos);
             for(var i=0;i<data.length;i++){
                 appendTodo(data[i],i+1);
             }
@@ -64,7 +99,7 @@ function getTodos() {
 }
 
 function appendTodo(todo,idx) {
-    $(".mainContainer").append("<div class='todoItem' id='todo-"+idx+"'></div>");
+    $("#todosContinaer").append("<div class='todoItem' id='todo-"+idx+"'></div>");
     $("#todo-"+idx).append("<div class='id-level-"+todo.level+"'>"+idx+"</div>");
     $("#todo-"+idx).append("<div class='content'>"+todo.content+"</div>");
     $("#todo-"+idx).append("<div class='time'>"+todo.time+"</div>");
@@ -129,6 +164,53 @@ function avaiNumber(input) {
     document.getElementById("charNumber").innerText = 70-number;
 }
 
+function sortByDate(type) {
+    for(var i=0;i<todos.length-1;i++){
+        for(var j=i+1;j<todos.length;j++){
+            if(new Date(todos[i].time.replace(/-/,"/")) > new Date(todos[j].time.replace(/-/,"/")) ){
+                var temp = todos[i];
+                todos[i] = todos[j];
+                todos[j] = temp;
+            }
+        }
+    }
+    $("#todosContinaer").empty();
+    if(type == "up"){
+        for(var i=0;i<todos.length;i++){
+            appendTodo(todos[i],i+1);
+        }
+        sortTime = "down";
+    } else if (type == "down") {
+        for(var i=todos.length-1;i>=0;i--){
+            appendTodo(todos[i],i+1);
+        }
+        sortTime = "up";
+    }
+}
+
+function sortByLevel(type) {
+    for(var i=0;i<todos.length-1;i++){
+        for(var j=i+1;j<todos.length;j++){
+            if(todos[i].level > todos[j].level){
+                var temp = todos[i];
+                todos[i] = todos[j];
+                todos[j] = temp;
+            }
+        }
+    }
+    $("#todosContinaer").empty();
+    if(type == "up"){
+        for(var i=0;i<todos.length;i++){
+            appendTodo(todos[i],i+1);
+        }
+        sortLevel = "down";
+    } else if (type == "down") {
+        for(var i=todos.length-1;i>=0;i--){
+            appendTodo(todos[i],i+1);
+        }
+        sortLevel = "up";
+    }
+}
 
 
 

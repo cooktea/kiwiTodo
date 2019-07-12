@@ -21,6 +21,17 @@
     color: white;
 }
 
+id{
+    width: 50px;
+    height: 100%;
+    margin-left: 25px;
+    margin-right: 25px;
+    border-radius: 25px;
+    border: solid;
+    font-size: 25px;
+    color: white;
+}
+
 .id-level-3{
     width: 50px;
     height: 50px;

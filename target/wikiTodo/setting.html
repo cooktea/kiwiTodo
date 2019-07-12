@@ -36,6 +36,48 @@
         }
 
     </style>
+    <script>
+        $(document).ready(function () {
+            $(".switch").click(function () {
+                var id = $(this).attr("id");
+                console.log(id);
+                var src = $(this).children("img").attr("src");
+                if(src == "source/image/switch-open.png"){
+                    $.post(
+                        "http://localhost:8080/kiwiTodo_war_exploded/setting",
+                        {
+                            type:id,
+                            command:"close"
+                        },
+                        function(data){
+                            if (data.length == 9){
+                                $(this).children("img").attr("src","source/image/switch-close.png");
+                                $(this).next().children("h3").text("已关闭")
+                            } else {
+                                alert("修改失败")
+                            }
+                        }
+                    )
+                } else {
+                    $.post(
+                        "http://localhost:8080/kiwiTodo_war_exploded/setting",
+                        {
+                            type:id,
+                            command:"open"
+                        },
+                        function(data){
+                            if (data.length == 9){
+                                $(this).children("img").attr("src","source/image/switch-open.png");
+                                $(this).next().children("h3").text("已打开")
+                            } else {
+                                alert("修改失败")
+                            }
+                        }
+                    )
+                }
+            })
+        })
+    </script>
 </head>
 <body>
 <div style="width: 100%;height: 100%">
@@ -72,7 +114,7 @@
                 <h3>邮件推送服务</h3>
             </div>
             <div class="choice">
-                <div class="switch">
+                <div class="switch" id="emailPush">
                     <img src="source/image/switch-open.png">
                 </div>
                 <div class="status">
@@ -85,7 +127,7 @@
                 <h3>自动清空已完成Todo</h3>
             </div>
             <div class="choice">
-                <div class="switch">
+                <div class="switch" id="autoClearFinish">
                     <img src="source/image/switch-close.png">
                 </div>
                 <div class="status">
@@ -98,7 +140,7 @@
                 <h3>自动清空已删除Todo</h3>
             </div>
             <div class="choice">
-                <div class="switch">
+                <div class="switch" id="autoClearDelete">
                     <img src="source/image/switch-close.png">
                 </div>
                 <div class="status">
