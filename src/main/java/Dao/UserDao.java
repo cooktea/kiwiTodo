@@ -1,4 +1,5 @@
 package Dao;
+import bean.Setting;
 import bean.User;
 import Utils.Database;
 import java.sql.*;
@@ -36,8 +37,11 @@ public class UserDao extends myDao{
         String sql = String.format("insert into user(phoneNumber,password) values (\"%s\",\"%s\")",user.getPhoneNumber(),user.getPwd());
         Statement stmt = null;
         try {
+//            con.setAutoCommit(false);
             stmt = con.createStatement();
             stmt.executeUpdate(sql);
+//            con.commit();
+            this.initSettings(user);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -48,17 +52,13 @@ public class UserDao extends myDao{
     }
 
     public User getUser(String phoneNumber){
-        long start = System.currentTimeMillis();
         User user = null;
         Connection con = new Database().getConnection();
-        System.out.println(System.currentTimeMillis()-start);
         String sql = String.format("select * from user where phoneNumber = %s",phoneNumber);
         Statement stmt = null;
-        System.out.println(System.currentTimeMillis()-start);
         try {
             stmt = con.createStatement();
             ResultSet res = stmt.executeQuery(sql);
-            System.out.println(System.currentTimeMillis()-start);
             while (res.next()){
                 user = new User();
                 user.setId(res.getString("id"));
@@ -73,19 +73,69 @@ public class UserDao extends myDao{
         } finally {
             close(con,stmt);
         }
-        System.out.println(System.currentTimeMillis()-start);
+        user.setSetting(this.getSetting(user));
         return user;
     }
 
+    private Setting getSetting(User user){
+        Connection conn = null;
+        Statement stmt = null;
+        Setting setting = null;
+        try {
+            conn = new Database().getConnection();
+            conn.setAutoCommit(false);
+            stmt = conn.createStatement();
+            String sql = "select * from settings where user = "+user.getId();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()){
+                setting = new Setting();
+                setting.setEmailService(rs.getBoolean("emailService"));
+                setting.setAutoDeleteFinished(rs.getBoolean("autoDeleteFinished"));
+                setting.setAutoDeleteRemoved(rs.getBoolean("autoDeleteRemoved"));
+                break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(conn,stmt);
+        }
+        return setting;
+    }
+
+    private boolean initSettings(User user){
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            conn = new Database().getConnection();
+            conn.setAutoCommit(false);
+            stmt = conn.createStatement();
+            user = this.getUser(user.getPhoneNumber());
+            String sql = "insert into settings(user) values ("+user.getId()+")";
+            stmt.executeUpdate(sql);
+            conn.commit();
+        } catch (Exception e){
+            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            return false;
+        } finally {
+            close(conn,stmt);
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
-        long start = System.currentTimeMillis();
         UserDao dao = new UserDao();
-        System.out.println(System.currentTimeMillis()-start);
-        User user = dao.getUser("18936023725");
-        System.out.println(System.currentTimeMillis()-start);
+        User user = new User();
+//        user.setPhoneNumber("13770520587");
+//        user.setPwd("123456");
+        user = dao.getUser("18936023725");
         if(null != user){
             System.out.println("用户存在:");
-            System.out.println(user.toString());
+            System.out.println(user.getSetting().toString());
         } else {
             System.out.println("未找到用户");
         }

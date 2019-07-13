@@ -6,6 +6,7 @@ public class User {
     private String pwd = null;
     private String phoneNumber = null;
     private String Email = null;
+    private Setting setting = null;
 
     public User(){
 
@@ -27,6 +28,10 @@ public class User {
         this.pwd = pwd;
     }
 
+    public Setting getSetting() {
+        return setting;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -45,6 +50,10 @@ public class User {
 
     public String getEmail() {
         return Email;
+    }
+
+    public void setSetting(Setting setting) {
+        this.setting = setting;
     }
 
     public void setPhoneNumber(String phoneNumber) {
