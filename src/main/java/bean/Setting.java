@@ -1,5 +1,11 @@
 package bean;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Author  :   ChenKang
  * Time    :   2019/7/14
@@ -19,6 +25,24 @@ public class Setting {
 
     public Setting() {
 
+    }
+
+    public JSONArray toJSON(){
+        JSONArray json = new JSONArray();
+        Map<String,Object> col = new HashMap<>();
+        col.put("name","emailService");
+        col.put("value",this.emailService);
+        json.put(new JSONObject(col));
+        col.clear();
+        col.put("name","autoDeleteFinished");
+        col.put("value",this.autoDeleteFinished);
+        json.put(new JSONObject(col));
+        col.clear();
+        col.put("name","autoDeleteRemoved");
+        col.put("value",this.autoDeleteRemoved);
+        json.put(new JSONObject(col));
+        col.clear();
+        return json;
     }
 
     @Override
