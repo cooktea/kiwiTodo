@@ -69,6 +69,7 @@ $(document).ready(function () {
     getTodos();
 });
 function getTodos() {
+    $("#todosContinaer").fadeOut(0);
     $.getJSON(
         //todo 修改url
         "http://localhost:8080/kiwiTodo_war_exploded/todo",
@@ -94,6 +95,7 @@ function getTodos() {
             $("[src='source/image/delete-white.png']").mouseout(function () {
                 this.src = "source/image/delete-white.png"
             });
+            $("#todosContinaer").fadeIn(500);
         }
     )
 }

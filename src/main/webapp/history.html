@@ -169,6 +169,7 @@
     });
 
     function getFinished() {
+        $("#finished").fadeOut(0);
         $.getJSON(
             //todo 更改URL
             "http://localhost:8080/kiwiTodo_war_exploded/todo",
@@ -177,11 +178,13 @@
             },
             function (data) {
                 addTodos(data,"finished");
+                $("#finished").fadeIn(500);
             }
         )
     }
 
     function getDeleted() {
+        $("#deleted").fadeOut(0);
         $.getJSON(
             //todo 更改URL
             "http://localhost:8080/kiwiTodo_war_exploded/todo",
@@ -190,6 +193,7 @@
             },
             function (data) {
                 addTodos(data,"deleted");
+                $("#deleted").fadeIn(500);
             }
         )
     }

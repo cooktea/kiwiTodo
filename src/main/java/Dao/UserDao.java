@@ -41,7 +41,7 @@ public class UserDao extends myDao{
             stmt = con.createStatement();
             stmt.executeUpdate(sql);
 //            con.commit();
-            this.initSettings(user);
+            new SettingDao().initSettings(user);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -100,31 +100,6 @@ public class UserDao extends myDao{
             close(conn,stmt);
         }
         return setting;
-    }
-
-    private boolean initSettings(User user){
-        Connection conn = null;
-        Statement stmt = null;
-        try {
-            conn = new Database().getConnection();
-            conn.setAutoCommit(false);
-            stmt = conn.createStatement();
-            user = this.getUser(user.getPhoneNumber());
-            String sql = "insert into settings(user) values ("+user.getId()+")";
-            stmt.executeUpdate(sql);
-            conn.commit();
-        } catch (Exception e){
-            e.printStackTrace();
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            return false;
-        } finally {
-            close(conn,stmt);
-        }
-        return true;
     }
 
     public static void main(String[] args) {
