@@ -2,12 +2,35 @@ package Dao;
 import bean.Setting;
 import bean.User;
 import Utils.Database;
+import org.json.JSONObject;
+
 import java.sql.*;
 
 
 public class UserDao extends myDao{
     public UserDao(){
     }
+
+    public boolean modifiyUserInfo(User user){
+        boolean success = true;
+        Connection con = new Database().getConnection();
+        String sql = String.format("update user set email = ? , name = ? where id = ?");
+        PreparedStatement stmt = null;
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1,user.getEmail());
+            stmt.setString(2,user.getUserName());
+            stmt.setInt(3,Integer.parseInt(user.getId()));
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            success = false;
+        } finally {
+            close(con,stmt);
+        }
+        return success;
+    }
+
     public boolean login(User user){
         Connection con = new Database().getConnection();
         String sql = String.format("select * from user where phoneNumber = \"%s\" and password = \"%s\"",user.getPhoneNumber(),user.getPwd());
@@ -64,8 +87,8 @@ public class UserDao extends myDao{
                 user.setId(res.getString("id"));
                 user.setPhoneNumber(res.getString("phoneNumber"));
                 user.setPwd(res.getString("password"));
-                user.setEmail(res.getString("email"));
-                user.setUserName("name");
+                user.setEmail(res.getString("email") == null?"未知":res.getString("email"));
+                user.setUserName(res.getString("name") == null?"未知":res.getString("name"));
                 break;
             }
         } catch (SQLException e) {

@@ -11,6 +11,7 @@ import java.io.IOException;
 import Dao.UserDao;
 import bean.*;
 import Utils.userUtils;
+import org.json.JSONObject;
 
 @WebServlet(name = "User")
 public class User extends HttpServlet {
@@ -19,13 +20,12 @@ public class User extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        long start = System.currentTimeMillis();
+        UserDao dao = new UserDao();
         String type = request.getParameter("type");
         String number = request.getParameter("phoneNumber");
         String pwd = request.getParameter("password");
         if(type.equals("getUser")){
 //            System.out.println("验证有没有用户："+number);
-            UserDao dao = new UserDao();
             bean.User user = dao.getUser(number);
             if(null != user){
                 response.getWriter().println("HaveUser");
@@ -33,7 +33,6 @@ public class User extends HttpServlet {
                 response.getWriter().println("NoUser");
             }
         } else if(type.equals("login")){
-            UserDao dao = new UserDao();
             bean.User user = new bean.User(number,pwd);
             System.out.println(user.toString());
             if(dao.login(user)){
@@ -49,7 +48,6 @@ public class User extends HttpServlet {
             }
         } else if(type.equals("register")){
             System.out.println("注册用户："+number);
-            UserDao dao = new UserDao();
             bean.User user = new bean.User(number,pwd);
             if(dao.register(user)){
             response.getWriter().println("success");
@@ -75,8 +73,17 @@ public class User extends HttpServlet {
                 response.getWriter().println("退出登陆失败，请稍后再试");
                 response.setHeader("refresh","3,URL=index.html");
             }
+        } else if (type.equals("getUserInfo")){
+            response.getWriter().println(new JSONObject(userUtils.getUser(request.getCookies())));
+        } else if (type.equals("modifiyUserInfo")){
+            bean.User user = userUtils.getUser(request.getCookies());
+            user.setUserName(request.getParameter("name"));
+            user.setEmail(request.getParameter("email"));
+            if(dao.modifiyUserInfo(user)){
+                response.getWriter().println("success");
+            } else {
+                response.getWriter().println("faild");
+            }
         }
-        long end = System.currentTimeMillis();
-        System.out.println("响应花费了"+(end-start)+"ms");
     }
 }
