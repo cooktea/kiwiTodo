@@ -143,7 +143,6 @@
 
 <script>
     $(document).ready(function () {
-        $("#deleted").hide();
         $("#switch").mouseover(function () {
             console.log("xxx");
             $(this).children("img").attr("src","source/image/switch-red.png");
@@ -193,7 +192,7 @@
             },
             function (data) {
                 addTodos(data,"deleted");
-                $("#deleted").fadeIn(500);
+                $("#deleted").hide();
             }
         )
     }
