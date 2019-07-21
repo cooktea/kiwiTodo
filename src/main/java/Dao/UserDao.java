@@ -5,6 +5,8 @@ import Utils.Database;
 import org.json.JSONObject;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class UserDao extends myDao{
@@ -72,6 +74,31 @@ public class UserDao extends myDao{
             close(con,stmt);
         }
         return true;
+    }
+
+    public List<User> getUsers(){
+        Connection con = new Database().getConnection();
+        String sql = String.format("select * from user");
+        Statement stmt = null;
+        List<User> users = new ArrayList<>();
+        try {
+            stmt = con.createStatement();
+            ResultSet res = stmt.executeQuery(sql);
+            while (res.next()){
+                User user = new User();
+                user.setId(res.getString("id"));
+                user.setPwd(res.getString("password"));
+                user.setPhoneNumber(res.getString("phoneNumber"));
+                user.setUserName(res.getString("name") == null?"未知":res.getString("name"));
+                user.setEmail(res.getString("email") == null?"未知":res.getString("email"));
+                user.setSetting(this.getSetting(user));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(con,stmt);
+        }return users;
     }
 
     public User getUser(String phoneNumber){

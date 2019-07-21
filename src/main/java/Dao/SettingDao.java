@@ -5,6 +5,8 @@ import bean.Setting;
 import bean.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author  :   ChenKang
@@ -23,6 +25,29 @@ public class SettingDao extends myDao{
         }
     }
 
+    public List<Setting> getSettings(){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String sql = "select * from settings";
+        List<Setting> settings = new ArrayList<>();
+        try {
+            conn = new Database().getConnection();
+            stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                Setting s = new Setting();
+                s.setEmailService(rs.getBoolean("emailService"));
+                s.setAutoDeleteRemoved(rs.getBoolean("autoDeleteRemoved"));
+                s.setAutoDeleteFinished(rs.getBoolean("autoDeleteFinished"));
+                settings.add(s);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(conn,stmt);
+        }
+        return settings;
+    }
 
     public boolean modifiySetting(int id,String col,String cmd){
         Connection conn = null;
@@ -37,6 +62,8 @@ public class SettingDao extends myDao{
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            close(conn,stmt);
         }
         return true;
     }

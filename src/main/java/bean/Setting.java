@@ -13,6 +13,7 @@ import java.util.Map;
  */
 
 public class Setting {
+
     private boolean emailService;
     private boolean autoDeleteFinished;
     private boolean autoDeleteRemoved;

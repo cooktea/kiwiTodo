@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>emailTest</title>
+    <style>
+        div,body{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0px;
+            padding: 0px;
+            border: 2px;
+        }
+        .body{
+            width: 100%;
+        }
+        div{
+            width: 600px;
+        }
+        .greetings{
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-bottom: 50px;
+        }
+        .todo{
+            margin: 10px;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+    </style>
+</head>
+<div class="body">
+    <h1 style="color: #1e50a2">今日份Todo通知</h1>
+    <div class="greetings">
+        <h3>早上好啊，{{userName}}。</h3>
+        <h3>今天是{{Date}}，你还有以下的代办事项等待完成。请查收。</h3>
+        <a href="http://www.KiwiTodo.com">进入KiwiTodo</a>
+    </div>
+    <div style="align-items: flex-start;justify-content: flex-start;padding-left: 50px">
+        <div class="todo">{{todos}}</div>
+    </div>
+</div>
+</html>
